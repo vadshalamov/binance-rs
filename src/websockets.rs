@@ -18,15 +18,16 @@ enum WebsocketAPI {
 }
 
 impl WebsocketAPI {
-
     fn params(self, subscription: &str) -> String {
         match self {
             WebsocketAPI::Default => format!("wss://stream.binance.com:9443/ws/{}", subscription),
-            WebsocketAPI::MultiStream => format!("wss://stream.binance.com:9443/stream?streams={}", subscription),
+            WebsocketAPI::MultiStream => format!(
+                "wss://stream.binance.com:9443/stream?streams={}",
+                subscription
+            ),
             WebsocketAPI::Custom(url) => url,
         }
     }
-
 }
 
 #[allow(clippy::large_enum_variant)]
@@ -65,7 +66,6 @@ enum Events {
 }
 
 impl<'a> WebSockets<'a> {
-
     pub fn new<Callback>(handler: Callback) -> WebSockets<'a>
     where
         Callback: FnMut(WebsocketEvent) -> Result<()> + 'a,
@@ -95,7 +95,7 @@ impl<'a> WebSockets<'a> {
                 self.socket = Some(answer);
                 Ok(())
             }
-            Err(e) => bail!(format!("Error during handshake {}", e))
+            Err(e) => bail!(format!("Error during handshake {}", e)),
         }
     }
 
@@ -106,13 +106,12 @@ impl<'a> WebSockets<'a> {
         }
         bail!("Not able to close the connection");
     }
-    
+
     pub fn test_handle_msg(&mut self, msg: &str) -> Result<()> {
         self.handle_msg(msg)
     }
 
     fn handle_msg(&mut self, msg: &str) -> Result<()> {
-
         let value: serde_json::Value = serde_json::from_str(msg)?;
 
         if let Some(data) = value.get("data") {
@@ -149,11 +148,10 @@ impl<'a> WebSockets<'a> {
                         }
                     }
                     Message::Ping(_) | Message::Pong(_) | Message::Binary(_) => (),
-                    Message::Close(e) => bail!(format!("Disconnected {:?}", e))
+                    Message::Close(e) => bail!(format!("Disconnected {:?}", e)),
                 }
             }
         }
         Ok(())
     }
-
 }

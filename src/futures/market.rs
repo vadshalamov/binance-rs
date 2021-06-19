@@ -61,7 +61,8 @@ impl FuturesMarket {
         let mut parameters: BTreeMap<String, String> = BTreeMap::new();
         parameters.insert("symbol".into(), symbol.into());
         let request = build_request(parameters);
-        self.client.get(API::Futures(Futures::Trades), Some(request))
+        self.client
+            .get(API::Futures(Futures::Trades), Some(request))
     }
 
     // TODO This may be incomplete, as it hasn't been tested
@@ -87,7 +88,8 @@ impl FuturesMarket {
 
         let request = build_signed_request(parameters, self.recv_window)?;
 
-        self.client.get_signed(API::Futures(Futures::HistoricalTrades), Some(request))
+        self.client
+            .get_signed(API::Futures(Futures::HistoricalTrades), Some(request))
     }
 
     pub fn get_agg_trades<S1, S2, S3, S4, S5>(
@@ -120,7 +122,8 @@ impl FuturesMarket {
 
         let request = build_request(parameters);
 
-        self.client.get(API::Futures(Futures::AggTrades), Some(request))
+        self.client
+            .get(API::Futures(Futures::AggTrades), Some(request))
     }
 
     // Returns up to 'limit' klines for given symbol and interval ("1m", "5m", ...)
@@ -187,7 +190,8 @@ impl FuturesMarket {
         parameters.insert("symbol".into(), symbol.into());
         let request = build_request(parameters);
 
-        self.client.get(API::Futures(Futures::Ticker24hr), Some(request))
+        self.client
+            .get(API::Futures(Futures::Ticker24hr), Some(request))
     }
 
     // Latest price for ONE symbol.
@@ -200,7 +204,8 @@ impl FuturesMarket {
         parameters.insert("symbol".into(), symbol.into());
         let request = build_request(parameters);
 
-        self.client.get(API::Futures(Futures::TickerPrice), Some(request))
+        self.client
+            .get(API::Futures(Futures::TickerPrice), Some(request))
     }
 
     // Symbols order book ticker
@@ -217,7 +222,8 @@ impl FuturesMarket {
         let mut parameters: BTreeMap<String, String> = BTreeMap::new();
         parameters.insert("symbol".into(), symbol.into());
         let request = build_request(parameters);
-        self.client.get(API::Futures(Futures::BookTicker), Some(request))
+        self.client
+            .get(API::Futures(Futures::BookTicker), Some(request))
     }
 
     pub fn get_mark_prices(&self) -> Result<MarkPrices> {
@@ -235,6 +241,7 @@ impl FuturesMarket {
         let mut parameters: BTreeMap<String, String> = BTreeMap::new();
         parameters.insert("symbol".into(), symbol.into());
         let request = build_request(parameters);
-        self.client.get(API::Futures(Futures::OpenInterest), Some(request))
+        self.client
+            .get(API::Futures(Futures::OpenInterest), Some(request))
     }
 }
